@@ -28,7 +28,7 @@
     .taskPanel {
         display: flex;
         flex-direction: column;
-        width: 40%;
+        width: 46%;
         justify-content: space-between;
         font-family: 'Raleway';
 
@@ -36,8 +36,7 @@
             display: flex;
             justify-content: center;
         }
-
-        input {
+        #extraTask {
             width: 80%;
             height: 3rem;
             border-radius: 15px;
@@ -79,5 +78,29 @@
             cursor: pointer;
         }
     }
+    .ListTasks {
+        
+        ul {
+            p {
+                width: 15%;
+                font-size: 1.5rem;
+                font-weight: bold;
+                word-wrap: break-word;
+            }
+            li {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                align-items: center;
+                padding: 1rem 0 1rem 0;
+            }
+            
+        }
 
+
+        input {
+            height: 3rem;
+            width: 1.5rem;
+        }
+    }
 }

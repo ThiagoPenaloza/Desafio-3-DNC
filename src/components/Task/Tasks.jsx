@@ -1,28 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.scss";
 import Lapis from "../../assets/lapis.png";
 import Trash from "../../assets/lixeira.png";
 import { Link } from "react-router-dom";
-import Delete from "../../views/Delete/Delete";
-import Edit from "../../views/Edit/Edit";
 
 const Task = () => {
   const [newItem, setNewItem] = useState("");
   const [items, setItems] = useState([]);
 
+  const loadSavedData = () => {
+    const savedItems = localStorage.getItem("taskItems");
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  };
+
   function addItem() {
     if (!newItem) {
       alert("Coloque uma tarefa!");
+    } else {
+      const item = {
+        id: Math.floor(Math.random() * 1000),
+        value: newItem,
+      };
+
+      setItems((oldList) => [...oldList, item]);
+
+      setNewItem("");
     }
+  }
 
-    const item = {
-      id: Math.floor(Math.random() * 1000),
-      value: newItem,
-    };
-
-    setItems((oldList) => [...oldList, item]);
-
-    setNewItem("");
+  function deleteItem(id) {
+    const newArray = items.filter((item) => item.id !== id);
+    setItems(newArray);
   }
 
   const [showAdd, setShowDiv] = useState(false);
@@ -67,19 +77,25 @@ const Task = () => {
           </div>
         )}
 
-        <div className="taskPanel__listTasks">
+        <div className="ListTasks">
           <ul>
             {items.map((item) => {
               return (
                 <li key={item.id}>
-                  {item.value}{" "}
+                  <p>{item.value} </p>
                   <input type="checkbox" name="status" id="status" />
-                  <Link to={"Edit"}>
-                    <img src={Lapis} alt="" />
-                  </Link>
-                  <Link to={"Delete"}>
-                    <img src={Trash} alt="" />
-                  </Link>{" "}
+                  <div className="icons">
+                    <Link to={"Edit"}>
+                      <img src={Lapis} alt="" />
+                    </Link>
+                    <Link to={"Delete"}>
+                      <img
+                        src={Trash}
+                        onClick={() => deleteItem(item.id)}
+                        alt=""
+                      />
+                    </Link>{" "}
+                  </div>
                 </li>
               );
             })}
