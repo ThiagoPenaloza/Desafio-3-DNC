@@ -9,7 +9,9 @@ const Edit = () => {
     <div className="edit">
       <Header />
       <Title />
-      <EditScreen />
+      <div className="deleteScreenDiv">
+        <EditScreen />
+      </div>
     </div>
   );
 };

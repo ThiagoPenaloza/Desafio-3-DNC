@@ -7,13 +7,31 @@ import { Link } from "react-router-dom";
 const Task = () => {
   const [newItem, setNewItem] = useState("");
   const [items, setItems] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    loadSavedData();
+  }, []);
 
   const loadSavedData = () => {
     const savedItems = localStorage.getItem("taskItems");
     if (savedItems) {
       setItems(JSON.parse(savedItems));
     }
+
+    const savedCheckboxState = localStorage.getItem("checkboxState");
+    if (savedCheckboxState) {
+      setIsChecked(JSON.parse(savedCheckboxState));
+    }
   };
+
+  useEffect(() => {
+    localStorage.setItem("taskItems", JSON.stringify(items));
+  }, [items]);
+
+  useEffect(() => {
+    localStorage.setItem("checkboxState", JSON.stringify(isChecked));
+  }, [isChecked]);
 
   function addItem() {
     if (!newItem) {
@@ -33,6 +51,8 @@ const Task = () => {
   function deleteItem(id) {
     const newArray = items.filter((item) => item.id !== id);
     setItems(newArray);
+
+    localStorage.setItem("taskItems", JSON.stringify(newArray));
   }
 
   const [showAdd, setShowDiv] = useState(false);
@@ -83,7 +103,13 @@ const Task = () => {
               return (
                 <li key={item.id}>
                   <p>{item.value} </p>
-                  <input type="checkbox" name="status" id="status" />
+                  <input
+                    checked={isChecked}
+                    type="checkbox"
+                    name="status"
+                    id="status"
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
                   <div className="icons">
                     <Link to={"Edit"}>
                       <img src={Lapis} alt="" />
